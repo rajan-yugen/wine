@@ -14,5 +14,16 @@ jobs:
           pip install -r requirements.txt
           python train.py
           
-          echo "MODEL METRICS"
-          cat metrics.txt
+          # Create an report.md file and append the metrics.txt file data into the report.md file
+          echo "## MODEL METRICS" > report.md
+          cat metrics.txt >> report.md
+          
+          # we have created a feature_importance.png and residuals.png in the train file
+          # we are providing the flag stating that we want in the md format for markdown
+          echo "## Data viz" >> report.md
+          cml-publish feature_importance.png --md >> report.md
+          cml-publish residuals.png --md >> report.md
+          
+          # Now, we have our report.md file ready. Let's deliver it with CML send comment report.md
+          cml-send-comment report.md
+          
